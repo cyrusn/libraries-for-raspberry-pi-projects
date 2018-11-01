@@ -1,8 +1,8 @@
+#! /user/bin/env python3
 from gpiozero import Button, LED
 from picamera import PiCamera
 from datetime import datetime
 from signal import pause
-from time import sleep
 
 led = LED(19)
 left_button = Button(20)
@@ -12,16 +12,15 @@ camera.rotation = 90
 previewOn = False
 lightOn = False
 
+IMAGE_LOCATION = '/home/pi/Desktop/Images'
 
 def capture():
-    led.on()
-    
-    now = datetime.now().isoformat()
-    path = '/home/pi/Desktop/testCamera/{}.jpg'.format(now)
-    print('Image Captured: ', path)
-    camera.capture(path)
-    sleep(0.5)
-    led.off()
+    global previewOn
+    if previewOn:    
+        now = datetime.now().isoformat()
+        path = IMAGE_LOCATION+'/{}.jpg'.format(now)
+        print('Image Captured: ', path)
+        camera.capture(path)
 
 def togglePreview():
     global previewOn
@@ -33,8 +32,12 @@ def togglePreview():
         led.off()
         camera.stop_preview()
 
+
 left_button.when_pressed = togglePreview
 
 right_button.when_pressed = capture
+
+
+print('Press left button to start preview.\nPress right button while previewing to capture image.\nPress ctrl-C to stop the programme.')
 
 pause()
