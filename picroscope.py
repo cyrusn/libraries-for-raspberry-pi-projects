@@ -36,6 +36,7 @@ class Picroscope:
             self.led.off()
             self.camera.stop_preview()
 
+    @property
     def help_text(self):
         return (
             "Press left button to start preview.\n"
@@ -53,7 +54,7 @@ if __name__ == "__main__":
     right_button = Button(21)
     picroscope = Picroscope(led=led, rotation=90, captureDir="/home/pi/Desktop/Images")
 
-    print(microscope.help_text())
+    print(microscope.help_text)
     left_button.when_pressed = picroscope.toggle_preview
     right_button.when_pressed = picroscope.capture
     pause()
